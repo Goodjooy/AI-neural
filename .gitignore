@@ -1,3 +1,6 @@
 *.crdownload
 *.csv
 .vscode/
+train/
+
+*.json

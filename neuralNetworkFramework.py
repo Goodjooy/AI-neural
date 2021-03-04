@@ -85,10 +85,10 @@ class NeuralNetwork(object):
 
 # %%
 input_nodes = 784
-hidden_nodes = 100
+hidden_nodes = 400
 output_nodes = 10
 
-learn_rate = 0.3
+learn_rate = 0.2
 
 n = NeuralNetwork(input_nodes,
                   hidden_nodes,
@@ -96,7 +96,7 @@ n = NeuralNetwork(input_nodes,
                   learn_rate)
 
 with open("train\\mnist_train.csv", "r") as target:
-    data_list = target.readlines()[:500]
+    data_list = target.readlines()[:10000]
 # train
 for i in range(10):
     for single_train in data_list:
@@ -119,25 +119,32 @@ mp.imshow(n.w_in_hidden)
 
 # %%
 with open("train\\mnist_test.csv", "r") as target:
-    test_data = target.readlines()
+    test_data = target.readlines()[:10000]
+
+total=0
+pass_test=0
+for test in test_data:
+
+    all_values = test.split(",")
+
+    imarr = numpy.asfarray(all_values[1:]).reshape((28, 28))
+
+    v = n.query((numpy.asfarray(all_values[1:])/255*0.99)+0.01)
+
+    v=list(zip(*v))[0]
+
+    maxd=max(v)
+
+    i=v.index(maxd)
+
+    if i==int (all_values[0]):
+        pass_test+=1
+
+    total+=1;
+
+print((pass_test/total)*100,"%")
 
 
-# %%
-all_values = test_data[146].split(",")
-
-all_values[0]
-# %%
-imarr = numpy.asfarray(all_values[1:]).reshape((28, 28))
-
-mp.imshow(imarr, cmap="Greys", interpolation='None')
-# %%
-v = n.query((numpy.asfarray(all_values[1:])/255*0.99)+0.01)
-
-count=0
-for t in v:
-    t=float(t[0])
-    print(count,":",t)
-    count+=1
 # %%
 with open("res.json","w")as target:
     import json
@@ -145,5 +152,8 @@ with open("res.json","w")as target:
     json.dump({
         "wih":n.w_in_hidden.tolist(),
         "who":n.w_hiden_out.tolist()
-    },target)
+    },target,indent=4)
+# %%
+a=list(zip([1],[2],[3]))
+print(a)
 # %%
