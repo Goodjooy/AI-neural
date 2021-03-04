@@ -98,7 +98,7 @@ n = NeuralNetwork(input_nodes,
 with open("train\\mnist_train.csv", "r") as target:
     data_list = target.readlines()[:10000]
 # train
-for i in range(10):
+for i in range(2):
     for single_train in data_list:
         # input data
         all_values = single_train.split(",")
@@ -119,7 +119,7 @@ mp.imshow(n.w_in_hidden)
 
 # %%
 with open("train\\mnist_test.csv", "r") as target:
-    test_data = target.readlines()[:10000]
+    test_data = target.readlines()
 
 total=0
 pass_test=0
@@ -142,7 +142,7 @@ for test in test_data:
 
     total+=1;
 
-print((pass_test/total)*100,"%")
+print((pass_test/total))
 
 
 # %%
